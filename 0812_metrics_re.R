@@ -75,7 +75,7 @@ lm_tbl <- purrr::imap(surface_list, ~{
 }) |> purrr::reduce(left_join, by = "grid_id")
 
 
-# (선택) CONTAG_* 의 NA를 100으로 치환(완전 응집으로 간주)
+##### 일단 이건 안함 (선택) CONTAG_* 의 NA를 100으로 치환(완전 응집으로 간주)
 lm_tbl <- lm_tbl |> mutate(across(starts_with("CONTAG_"), ~ ifelse(is.na(.x), 100, .x)))
 
 # ===== 6) 저장 =====
