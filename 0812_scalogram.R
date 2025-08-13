@@ -54,3 +54,15 @@ pick_plateau
 cors <- function(pre){ cor(m[grep(paste0("^",pre,"_"), names(m))], use="pairwise") }
 cors("SHDI"); cors("LPI"); cors("CONTAG")
 
+
+
+#### 500m만 추출
+in_csv  <- "/Users/hyeseon/Downloads/outputs/landscape_metrics_by_grid_100m.csv"
+out_csv <- "/Users/hyeseon/Downloads/outputs/landscape_metrics_500m.csv"
+
+library(readr); library(dplyr)
+
+read_csv(in_csv, show_col_types = FALSE) |>
+  select(grid_id, SHDI_500m, LPI_500m, CONTAG_500m) |>
+  mutate(grid_id = as.integer(grid_id)) |>             # QGIS 조인 안전장치
+  write_csv(out_csv, na = "")
