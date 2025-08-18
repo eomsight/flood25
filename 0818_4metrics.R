@@ -1,3 +1,5 @@
+
+######## 10m grain, 300-500-700m moving window !
 # ===== 패키지 / 옵션 =====
 library(sf); library(terra); library(landscapemetrics)
 library(dplyr); library(purrr); library(tidyr)
@@ -172,7 +174,7 @@ readr::write_csv(m[, c("grid_id", sel_cols)],
 
 
 
-####### scale 500 값으로 다 통일해서 저장할게요
+####### 4metrics -> scale 500 값으로 다 통일해서 저장할게요
 global_pick <- 500L
 sel_cols_global <- paste0(c("SHDI","LPI","CONTAG","ED"), "_", global_pick, "m")
 readr::write_csv(m[, c("grid_id", sel_cols_global)],
@@ -182,7 +184,7 @@ readr::write_csv(m[, c("grid_id", sel_cols_global)],
 
 
 
-####### 경계라인 NA값만 버퍼 줘서 다시 메워보겠습니다
+####### 경계라인 NA값만 버퍼 줘서 추가분석으로 빵꾸 메워보겠습니다
 ## ---- 0) 현재 500m 스택(기존 계산) ----
 global_pick <- 500L
 r_500 <- c(
@@ -255,6 +257,9 @@ print(rbind(before_na, after_na))
 
 
 
+
+
+
 ######## CONTAG NA -> 100으로 처리할게요
 library(readr); library(dplyr)
 
@@ -279,7 +284,7 @@ write_csv(df, csv_out, na = "NA")
 
 
 
-### GeoTIFF - QGIS 용 출력
+######## GeoTIFF - QGIS 용 출력
 library(terra)
 tif_in  <- file.path(out_dir, "maps_500m_filled.tif")
 tif_out <- file.path(out_dir, "maps_500m_filled_re2.tif")
