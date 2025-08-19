@@ -34,3 +34,4 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 0818_4metrics.RData
+0819_normalize.RData
