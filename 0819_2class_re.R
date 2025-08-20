@@ -65,8 +65,8 @@ calc_one <- function(x, y){
       progress  = FALSE
     )
   )
-  ed  <- m$value[m$metric == "lsm_c_ed"];  ed  <- if (length(ed)==0)  NA_real_ else ed
-  lpi <- m$value[m$metric == "lsm_c_lpi"]; lpi <- if (length(lpi)==0) NA_real_ else lpi
+  ed  <- m$value[m$metric == "ed"];   ed  <- if (length(ed)==0)  NA_real_ else ed
+  lpi <- m$value[m$metric == "lpi"];  lpi <- if (length(lpi)==0) NA_real_ else lpi
   c(ed, lpi)   # units: ED=m/ha, LPI=%
 }
 
@@ -90,6 +90,8 @@ terra::writeRaster(c(r_lpi, r_ed),
                    file.path(out_dir, "class100_LPI_ED_500m_10m.tif"),
                    overwrite = TRUE, gdal = c("COMPRESS=LZW"))
 
+
+
 # (선택) CSV 포인트도 필요하면:
 pts <- terra::as.points(mask10, values = FALSE)
 pts <- pts[cells]                                     # 계산한 중심만
@@ -98,3 +100,15 @@ pts_sf$LPI100_500m <- lpi_vec; pts_sf$ED100_500m <- ed_vec
 sf::st_write(pts_sf, file.path(out_dir,"class100_LPI_ED_500m_10m_points.gpkg"),
              delete_dsn = TRUE, quiet = TRUE)
 
+
+
+
+
+# 벡터 자체 점검
+summary(lpi_vec)                     # 최소/최대/NA 개수
+summary(ed_vec)
+sum(is.finite(lpi_vec)); sum(is.finite(ed_vec))
+
+# 래스터로 올린 뒤 통계
+terra::global(r_lpi, c("min","max","mean"), na.rm=TRUE)
+terra::global(r_ed,  c("min","max","mean"), na.rm=TRUE)
